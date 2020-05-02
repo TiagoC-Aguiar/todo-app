@@ -32,7 +32,7 @@ module.exports = {
 
   async delete(request, response) {
     const { id } = request.params
-    await await connection('users').where({id}).del()
+    await connection('users').where({id}).del()
     response.json({message: 'removido com sucesso!'})
   },
 

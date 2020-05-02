@@ -2,8 +2,7 @@ const express = require('express')
 const routes = express.Router()
 const UserController = require('./controllers/UserController')
 const SessionController = require('./controllers/SessionController')
-
-const connection = require('./database/connection')
+const ListController = require('./controllers/ListController')
 
 routes.post('/sessions', SessionController.create)
 
@@ -12,29 +11,10 @@ routes.post('/users', UserController.create)
 routes.put('/users/:id', UserController.update)
 routes.delete('/users/:id', UserController.delete)
 
-routes.get('/lists', async (request, response) => {
-  const id = request.headers.authorization
-  const lists = await connection('lists')
-    .where('user_id', id)
-    .select('*')     
-  if(!lists) {
-    return response.json({ message: 'Não encontrado' })
-  }
-  return response.json(lists)  
-})
+routes.get('/lists', ListController.index)
+routes.post('/lists', ListController.create)
+routes.put('/lists/:id', ListController.update)
 
-
-routes.post('/lists', async (request, response) => {
-  const { title } = request.body
-  const user_id = request.headers.authorization
-
-  console.log(`***** aqui ===> ${title} e ${user_id}`)
-
-  await connection('lists').insert({
-    title, user_id
-  })
-
-  return response.json({ message: 'Lista cadastrada com sucesso' })
-})
+routes.delete('/lists/:id', ListController.delete)
 
 module.exports = routes
