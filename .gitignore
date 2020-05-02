@@ -1,1 +1,8 @@
 */node_modules
+.pnp
+.pnp.js
+
+*/build
+
+yarn-debug.log*
+yarn-error.log*
