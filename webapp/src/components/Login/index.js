@@ -3,13 +3,21 @@ import React from 'react'
 import './Login.css'
 
 function Login() {
+
+  function onSubmit(e) {
+    e.preventDefault()
+  }
+
   return (
     <div className="login-container">
-      <form>
-        <input type="email" placeholder="Email" />
-        <input type="password" placeholder="Senha" />
-        <button type="submit">Entrar</button>
-      </form>
+      <div className="content">
+        <form>
+          <input type="email" placeholder="Email" />
+          <input type="password" placeholder="Senha" />
+          <button type="submit" onClick={onSubmit}>Entrar</button>
+        </form>
+
+      </div>
     </div>
   )
 }
