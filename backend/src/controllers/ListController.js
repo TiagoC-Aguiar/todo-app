@@ -3,16 +3,20 @@ const connection = require('../database/connection')
 module.exports = {
 
   async index(request, response) {
-    
-    const id = request.headers.authorization
-    const lists = await connection('lists')
-      .where('user_id', id)
-      .select('*')     
-    if(!lists) {
-      return response.json({ message: 'Não encontrado' })
+    try {
+      const id = request.headers.authorization
+      const lists = await connection('lists')
+        .where('user_id', id)
+        .select('*')     
+      if(lists.length === 0) {
+        response.status(204)
+      }     
+
+      return response.json(lists) 
+    } catch(err) {
+      response.status(401)
+      return response.json({ message: 'Usuário não autenticado' })
     }
-    
-    return response.json(lists)  
   },
 
   async create(request, response) {
