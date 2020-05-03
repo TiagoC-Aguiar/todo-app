@@ -11,9 +11,15 @@ module.exports = {
   async create(request, response) {
     const { name, email, password} = request.body
     try {
-      await connection('users').insert({
+      const [id] = await connection('users').insert({
         name, email, password
       })
+      console.log('usuário criado')
+
+      await connection('lists').insert({
+        title: 'inbox', user_id: id
+      })
+      console.log('Lista inbox criada!')
       
       return response.json({message: 'Dados adicionados com sucesso'})
     } catch(err) {

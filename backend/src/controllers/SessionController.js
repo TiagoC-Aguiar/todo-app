@@ -10,9 +10,15 @@ module.exports = {
       .first()
 
     if(!user) {
-      return response.status(400).json({ error: 'User not found'})
+      return response.status(401).json({ error: 'User not found'})
     }
 
-    return response.json(user)
+    const inbox = await connection('lists')
+      .where({ user_id: user.id })
+      .select('id')
+      .orderBy('id', 'asc')
+      .first()
+
+    return response.json([user, inbox])
   }
 }
