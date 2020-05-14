@@ -16,6 +16,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
+  font-size: 11pt;
 }
 
 .content ul li + li {
@@ -32,9 +34,23 @@ ul li * {
 
 ul li .list-title {
   width: 60%;
-  font-size: 11pt;
 }
 
 ul li .list-count {
   font-size: 10pt;
 }
+
+ul li:last-child {
+  display: flex;
+  justify-content: flex-start;
+  color: #28d;
+}
+
+ul li .new-list {
+  width: 100%;
+  border: 0;
+  height: 40px;
+  font-size: 12pt;
+  background-color: #f9f9f9;
+}
+

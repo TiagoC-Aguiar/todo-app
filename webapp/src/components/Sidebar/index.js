@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { FaList } from 'react-icons/fa'
+import { FaList, FaPlus } from 'react-icons/fa'
 
 import api from '../../services/api'
 
@@ -7,6 +7,7 @@ import './Sidebar.css'
 
 function Sidebar() {
   const [lists, setLists] = useState([])
+  const [isNewList, setIsNewList] = useState(false)
   const userId = localStorage.getItem('userId')
 
   async function handleLists() {
@@ -34,6 +35,10 @@ function Sidebar() {
     </li>
   ))
 
+  // const createList() {
+    
+  // }
+
   return (
     <div className="sidebar-container">
       <div className="content">
@@ -47,6 +52,18 @@ function Sidebar() {
               <span className="list-count">22</span>
             </li>
           ))}
+          <li onClick={() => setIsNewList(true)} style={{cursor: 'auto'}} onBlur={() => setIsNewList(false)}>
+            {(!isNewList) ? 
+            <>
+            <FaPlus />
+            <span className="add-list">
+              Nova lista
+            </span>
+            </>
+            : 
+            <input type="text" className="new-list" autoFocus />
+            }
+          </li>
         </ul>
       </div>
     </div>
