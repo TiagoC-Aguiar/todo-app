@@ -2,8 +2,12 @@
   width: 100%;
   height: 60px;
   background-color: #3c4;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   padding-left: 20px;
 }
 
@@ -12,3 +16,4 @@
   margin: 0 30px;
   font-size: 18pt;
 }
+/*# sourceMappingURL=Header.css.map */
