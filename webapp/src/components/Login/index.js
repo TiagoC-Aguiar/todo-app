@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import api from '../../services/api'
+import api from '../../services/api';
+import TextInput from '../TextInput';
 
-import './Login.css'
+import './Login.css';
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -15,44 +16,63 @@ function Login() {
     e.preventDefault()
 
     try {
-      const response = await api.post('/sessions', { email, password })
-      localStorage.setItem('userId', response.data[0].id)
-      localStorage.setItem('userName', response.data[0].name)
-
-      // console.log(response.data[0])
-
-      history.push(`/tasks/${response.data[1].id}`)
+      const { data } = await api.post('/sessions', { email, password });
+      const { id, name } = data[0];
+      localStorage.setItem('userId', id);
+      localStorage.setItem('userName', name);
+      history.push(`/tasks/${id}`);
     } catch(err) {
-      alert('Login ou senha inválidos.')
+      alert('Login ou senha inválidos.');
     }
+  };
 
-  }
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePassword = (event) => {
+    setPassword(event.target.value);
+  };
 
   return (
     <div className="login-container">
       <div className="content">
         <form>
-          <input 
+          <TextInput 
+            type={'email'} 
+            placeholder={"E-mail"} 
+            value={email} 
+            change={handleEmail}
+            focus={true}
+            required={true}
+          />
+          <TextInput 
+            type={'password'} 
+            placeholder={"Senha"} 
+            value={password} 
+            change={handlePassword}            
+            required={true}
+          />
+          {/* <input 
             type="email" 
             placeholder="Email" 
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={handleEmail}
             autoFocus
             required
-          />
-          <input 
+          /> */}
+          {/* <input 
             type="password" 
             placeholder="Senha" 
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={handlePassword}
             required
-          />
+          /> */}
           <button type="submit" onClick={onSubmit}>Entrar</button>
         </form>
-
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

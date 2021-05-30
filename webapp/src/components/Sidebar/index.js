@@ -1,67 +1,64 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { FaList, FaPlus } from 'react-icons/fa'
 
-import api from '../../services/api'
+import api from '../../services/api';
+import TextInput from '../TextInput';
 
-import './Sidebar.css'
+import './Sidebar.css';
 
 function Sidebar() {
   const [lists, setLists] = useState([])
   const [isNewList, setIsNewList] = useState(false)
-  const userId = localStorage.getItem('userId')
-
-  async function handleLists() {
-    await api.get('/lists', {
-      headers: {
-        authorization: userId
-      }
-    }).then(response => {
-      setLists(response.data)
-    })
-
-  }   
-
+  const userId = localStorage.getItem('userId');
+  
   useEffect(() => {
-    handleLists()
-  }, [])
+    async function handleLists() {
+      await api.get('/lists', {
+        headers: {
+          authorization: userId
+        }
+      }).then(response => {
+        setLists(response.data)
+      });
+    }
+    handleLists();
+  }, []);
 
   const getLists = lists.map(list => (
     <li key={list.id}>
-      <FaList /> 
+      <FaList />
       <span className="list-title">
         {list.title}
       </span>
       <span className="list-count">22</span>
     </li>
-  ))
+  ));
 
-  // const createList() {
-    
-  // }
+  const handleNewList = (click = true) => {
+    setIsNewList(click);
+  };
+
+  const handleNewListOff = () => {
+    handleNewList(false);
+  };
 
   return (
     <div className="sidebar-container">
       <div className="content">
         <ul>
-          {lists.map(list => (
-            <li key={list.id}>
-              <FaList /> 
-              <span className="list-title">
-                {list.title}
-              </span>
-              <span className="list-count">22</span>
-            </li>
-          ))}
-          <li onClick={() => setIsNewList(true)} style={{cursor: 'auto'}} onBlur={() => setIsNewList(false)}>
-            {(!isNewList) ? 
-            <>
-            <FaPlus />
-            <span className="add-list">
-              Nova lista
-            </span>
-            </>
-            : 
-            <input type="text" className="new-list" autoFocus />
+          {getLists}
+          <li onClick={handleNewList} style={style} onBlur={handleNewListOff}>
+            {
+              (!isNewList) ? (
+                <>
+                  <FaPlus />
+                  <span className="add-list">
+                    Nova lista
+                  </span>
+                </>
+              ) : (
+                <TextInput className="new-list" focus={true} />
+              )
             }
           </li>
         </ul>
@@ -70,4 +67,8 @@ function Sidebar() {
   )
 }
 
-export default Sidebar
+const style = {
+  cursor: 'pointer',
+};
+
+export default Sidebar;
